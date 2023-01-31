@@ -3,9 +3,10 @@ import os
 from .utilities import *
 
 
-def description_main(self, context):
+def tag_main(self, context):
     directory = get_catalog_directory(context)
     commands = {}
+    ct = 0
     for f in bpy.context.selected_asset_files:
         if f.local_id == None:
             path = get_file_path(f.relative_path, directory)
@@ -13,17 +14,18 @@ def description_main(self, context):
             if path not in commands.keys():
                 commands[path] = []
             commands[path].append(
-                "bpy.data."+type_out+"['"+f.name+"'].asset_data.description =\'"+self.description+"\';")
+                "d"+str(ct)+" = bpy.data."+type_out+"['"+f.name+"'].asset_data; d"+str(ct)+".tags.remove(d"+str(ct)+".tags[\'"+self.tag+"\']);")
+            ct += 1
     run_commands(commands)
 
 
-class AssetDescriptionOperator(bpy.types.Operator):
-    """Bulk Change Description"""
-    bl_idname = "asset.bulk_change_description"
-    bl_label = "Bulk Asset Change Description"
+class AssetTagRemoveOperator(bpy.types.Operator):
+    """Bulk Remove Tag"""
+    bl_idname = "asset.bulk_remove_tag"
+    bl_label = "Bulk Asset Remove Tag"
     bl_options = {'REGISTER', 'UNDO'}
 
-    description: bpy.props.StringProperty(name="New Description")
+    tag: bpy.props.StringProperty(name="Tag to Remove")
 
     @classmethod
     def poll(cls, context):
@@ -35,10 +37,10 @@ class AssetDescriptionOperator(bpy.types.Operator):
         return wm.invoke_props_dialog(self)
 
     def execute(self, context):
-        description_main(self, context)
+        tag_main(self, context)
         return {'FINISHED'}
 
 
-def description_menu_func(self, context):
-    self.layout.operator(AssetDescriptionOperator.bl_idname,
-                         text=AssetDescriptionOperator.bl_label)
+def tag_remove_menu_func(self, context):
+    self.layout.operator(AssetTagRemoveOperator.bl_idname,
+                         text=AssetTagRemoveOperator.bl_label)

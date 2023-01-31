@@ -1,5 +1,7 @@
 import bpy
-import os
+
+from .tag_add import *
+from .tag_remove import *
 from .move import *
 from .author import *
 from .description import *
@@ -18,32 +20,41 @@ bl_info = {
 classes = (
     AssetMoveOperator,
     AssetAuthorOperator,
-    AssetDescriptionOperator
+    AssetDescriptionOperator,
+    AssetTagAddOperator,
+    AssetTagRemoveOperator
+)
+
+menus = (
+    move_menu_func,
+    author_menu_func,
+    description_menu_func,
+    tag_add_menu_func,
+    tag_remove_menu_func
 )
 
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
+
     if hasattr(bpy.types, "ASSETBROWSER_MT_asset"):
-        bpy.types.ASSETBROWSER_MT_asset.append(move_menu_func)
-        bpy.types.ASSETBROWSER_MT_asset.append(author_menu_func)
-        bpy.types.ASSETBROWSER_MT_asset.append(description_menu_func)
+        for menu in menus:
+            bpy.types.ASSETBROWSER_MT_asset.append(menu)
     else:
-        bpy.types.ASSETBROWSER_MT_edit.append(move_menu_func)
-        bpy.types.ASSETBROWSER_MT_edit.append(author_menu_func)
-        bpy.types.ASSETBROWSER_MT_edit.append(description_menu_func)
-        
+        for menu in menus:
+            bpy.types.ASSETBROWSER_MT_edit.append(menu)
+
 
 def unregister():
+
     if hasattr(bpy.types, "ASSETBROWSER_MT_asset"):
-        bpy.types.ASSETBROWSER_MT_asset.remove(move_menu_func)
-        bpy.types.ASSETBROWSER_MT_asset.remove(author_menu_func)
-        bpy.types.ASSETBROWSER_MT_asset.remove(description_menu_func)
+        for menu in menus:
+            bpy.types.ASSETBROWSER_MT_asset.remove(menu)
     else:
-        bpy.types.ASSETBROWSER_MT_edit.remove(move_menu_func)
-        bpy.types.ASSETBROWSER_MT_edit.remove(author_menu_func)
-        bpy.types.ASSETBROWSER_MT_edit.remove(description_menu_func)
+        for menu in menus:
+            bpy.types.ASSETBROWSER_MT_edit.remove(menu)
+
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
 
