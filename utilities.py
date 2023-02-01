@@ -41,7 +41,7 @@ def finalizeExecute(self, context):
     wm = context.window_manager
     self.command_count = len(self.commands.keys())
     wm.progress_begin(0, self.command_count)
-    self._timer = wm.event_timer_add(0.1, window=context.window)
+    self._timer = wm.event_timer_add(0.25, window=context.window)
     wm.modal_handler_add(self)
     return {'RUNNING_MODAL'}
 
@@ -51,6 +51,8 @@ def handleModal(self, context: bpy.types.Context, event: bpy.types.Event):
     context.window_manager.progress_update(left)
 
     if event.type in {'RIGHTMOUSE', 'ESC'}:
+        bpy.ops.asset.library_refresh()
+        context.window_manager.progress_end()
         self.cancel(context)
         return {'CANCELLED'}
 
