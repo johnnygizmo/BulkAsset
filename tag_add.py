@@ -16,7 +16,11 @@ def tag_main(self, context):
                 commands[path] = []
             commands[path].append(
                 "bpy.data."+type_out+"['"+f.name+"'].asset_data.tags.new(\'"+self.tag+"\',skip_if_exists=True);")
+        else:
+            f.local_id.asset_data.tags.new(self.tag, skip_if_exists=True)
+
     run_commands(commands)
+    bpy.ops.asset.library_refresh()
 
 
 class AssetTagAddOperator(bpy.types.Operator):

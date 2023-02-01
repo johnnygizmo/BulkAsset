@@ -14,7 +14,10 @@ def description_main(self, context):
                 commands[path] = []
             commands[path].append(
                 "bpy.data."+type_out+"['"+f.name+"'].asset_data.description =\'"+self.description+"\';")
+        else:
+            f.local_id.asset_data.description = self.description
     run_commands(commands)
+    bpy.ops.asset.library_refresh()
 
 
 class AssetDescriptionOperator(bpy.types.Operator):

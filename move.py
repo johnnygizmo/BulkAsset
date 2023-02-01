@@ -14,7 +14,10 @@ def move_main(self, context):
                 commands[path] = []
             commands[path].append(
                 "bpy.data."+type_out+"['"+f.name+"'].asset_data.catalog_id =\'"+self.catalog+"\';")
+        else:
+            f.local_id.asset_data.catalog_id = self.catalog
     run_commands(commands)
+    bpy.ops.asset.library_refresh()
 
 
 class AssetMoveOperator(bpy.types.Operator):

@@ -5,6 +5,8 @@ import os
 def get_catalog_directory(context):
     catalog = context.space_data.params.catalog_id
     directory = context.space_data.params.directory
+    if directory == "b''":
+        return ""
     d = str(directory).split('\'')
     return d[1]
 
@@ -33,8 +35,6 @@ def run_commands(commands):
                            path, "--python-expr", expr])
         except:
             print("Error on the new Blender instance")
-
-        bpy.ops.asset.library_refresh()
 
 
 def item_callback(self, context):

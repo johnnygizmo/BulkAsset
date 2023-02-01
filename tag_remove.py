@@ -16,7 +16,11 @@ def tag_main(self, context):
             commands[path].append(
                 "d"+str(ct)+" = bpy.data."+type_out+"['"+f.name+"'].asset_data; d"+str(ct)+".tags.remove(d"+str(ct)+".tags[\'"+self.tag+"\']);")
             ct += 1
+        else:
+            f.local_id.asset_data.tags.remove(
+                f.local_id.asset_data.tags[self.tag])
     run_commands(commands)
+    bpy.ops.asset.library_refresh()
 
 
 class AssetTagRemoveOperator(bpy.types.Operator):

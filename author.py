@@ -14,7 +14,10 @@ def author_main(self, context):
                 commands[path] = []
             commands[path].append(
                 "bpy.data."+type_out+"['"+f.name+"'].asset_data.author =\'"+self.author+"\';")
+        else:
+            f.local_id.asset_data.author = self.author
     run_commands(commands)
+    bpy.ops.asset.library_refresh()
 
 
 class AssetAuthorOperator(bpy.types.Operator):
