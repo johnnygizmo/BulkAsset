@@ -37,6 +37,47 @@ def run_commands(commands):
             print("Error on the new Blender instance")
 
 
+def finalizeExecute(self, context):
+    wm = context.window_manager
+    self.command_count = len(self.commands.keys())
+    wm.progress_begin(0, self.command_count)
+    self._timer = wm.event_timer_add(0.1, window=context.window)
+    wm.modal_handler_add(self)
+    return {'RUNNING_MODAL'}
+
+
+def handleModal(self, context: bpy.types.Context, event: bpy.types.Event):
+    left = self.command_count-len(self.commands.keys())
+    context.window_manager.progress_update(left)
+
+    if event.type in {'RIGHTMOUSE', 'ESC'}:
+        self.cancel(context)
+        return {'CANCELLED'}
+
+    if event.type == 'TIMER':
+        if len(self.commands.keys()) > 0:
+            (path, commands) = self.commands.popitem()
+            run_command(path=path, commands=commands)
+            return {'RUNNING_MODAL'}
+        bpy.ops.asset.library_refresh()
+        context.window_manager.progress_end()
+        return {'FINISHED'}
+
+    return {'PASS_THROUGH'}
+
+
+def run_command(path, commands):
+    import subprocess
+    commandlist = "".join(commands)
+    try:
+        expr = "import bpy; "+commandlist + \
+            " bpy.ops.wm.save_mainfile(); bpy.ops.wm.quit_blender();"
+        subprocess.run([bpy.app.binary_path, "-b",
+                        path, "--python-expr", expr])
+    except:
+        print("Error on the new Blender instance")
+
+
 def item_callback(self, context):
     directory = context.space_data.params.directory
     d = str(directory).split('\'')
