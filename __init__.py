@@ -7,12 +7,12 @@ from .author import *
 from .description import *
 
 bl_info = {
-    "name": "Asset Bulk Tools",
+    "name": "Bulk Asset Tools",
     "author": "Johnny Matthews",
-    "location": "Asset Viewer - Edit/Asset Menu",
+    "location": "Asset Viewer - Edit Menu",
     "version": (1, 0),
     "blender": (3, 4, 1),
-    "description": "A set of tools for managing multiple assets",
+    "description": "A set of tools for managing multiple assets at the same time",
     "doc_url": "",
     "category": "Assets"
 }
