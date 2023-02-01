@@ -1,6 +1,1 @@
-__pycache__/author.cpython-310.pyc
-__pycache__/description.cpython-310.pyc
-__pycache__/move.cpython-310.pyc
-__pycache__/tag_add.cpython-310.pyc
-__pycache__/tag_remove.cpython-310.pyc
-__pycache__/utilities.cpython-310.pyc
+__pycache__/*
