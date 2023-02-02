@@ -2,6 +2,42 @@ import bpy
 import os
 
 
+class BaseBulkOperator(bpy.types.Operator):
+    bl_options = {'REGISTER', 'INTERNAL'}
+    commands = {}
+    command_count = 0
+    _timer = None
+
+    @classmethod
+    def poll(cls, context):
+        return context.space_data.type == 'FILE_BROWSER' and context.space_data.browse_mode == 'ASSETS'
+
+    def modal(self, context, event: bpy.types.Event):
+        return handleModal(self, context, event)
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def cancel(self, context):
+        wm = context.window_manager
+        if self._timer != None:
+            wm.event_timer_remove(self._timer)
+        return None
+
+    def main(self, context):
+        pass
+
+    def execute(self, context):
+        self.main(context)
+        return finalizeExecute(self, context)
+
+
+def header_menu_func(self, context):
+    self.layout.operator_context = 'INVOKE_DEFAULT'
+    self.layout.separator()
+    self.layout.label(text="=== Bulk Asset Tools ===")
+
+
 def get_catalog_directory(context):
     catalog = context.space_data.params.catalog_id
     directory = context.space_data.params.directory
@@ -78,6 +114,19 @@ def run_command(path, commands):
                         path, "--python-expr", expr])
     except:
         print("Error on the new Blender instance")
+
+
+def tag_callback(self, context):
+    tags = {}
+    for f in bpy.context.selected_asset_files:
+        for tag in f.asset_data.tags:
+            tags[tag.name] = True
+    output = []
+    i = 0
+    for tag in tags.keys():
+        output.append((tag, tag, "", i))
+        i += 1
+    return output
 
 
 def item_callback(self, context):

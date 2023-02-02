@@ -3,39 +3,16 @@ import os
 from .utilities import *
 
 
-class AssetTagRemoveOperator(bpy.types.Operator):
+class ASSET_OT_TagRemoveOperator(BaseBulkOperator):
     """Bulk Remove Tag"""
     bl_idname = "asset.bulk_remove_tag"
-    bl_label = "Bulk Asset Remove Tag"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_label = "Remove Tag"
 
-    tag: bpy.props.StringProperty(name="Tag to Remove")
-    commands = {}
-    command_count = 0
-    _timer = None
+    tag: bpy.props.EnumProperty(
+        name="Tag to Remove", items=tag_callback)
 
-    @classmethod
-    def poll(cls, context):
-        return context.space_data.type == 'FILE_BROWSER' and context.space_data.browse_mode == 'ASSETS'
-
-    def modal(self, context, event: bpy.types.Event):
-        return handleModal(self, context, event)
-
-    def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self)
-
-    def execute(self, context):
-        self.tag_main(context)
-        return finalizeExecute(self, context)
-
-    def cancel(self, context):
-        wm = context.window_manager
-        wm.event_timer_remove(self._timer)
-        return {'FINISHED'}
-
-    def tag_main(self, context):
+    def main(self, context):
         directory = get_catalog_directory(context)
-        commands = {}
         ct = 0
         for f in bpy.context.selected_asset_files:
             if f.local_id == None:
@@ -51,6 +28,7 @@ class AssetTagRemoveOperator(bpy.types.Operator):
                     f.local_id.asset_data.tags[self.tag])
 
 
-def tag_remove_menu_func(self, context):
-    self.layout.operator(AssetTagRemoveOperator.bl_idname,
-                         text=AssetTagRemoveOperator.bl_label)
+def ASSET_MT_tag_remove_menu_func(self, context):
+    self.layout.operator_context = 'INVOKE_DEFAULT'
+    self.layout.operator(ASSET_OT_TagRemoveOperator.bl_idname,
+                         text=ASSET_OT_TagRemoveOperator.bl_label)

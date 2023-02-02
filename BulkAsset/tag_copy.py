@@ -3,12 +3,13 @@ import os
 from .utilities import *
 
 
-class ASSET_OT_TagAddOperator(BaseBulkOperator):
-    """Bulk Add Tag"""
-    bl_idname = "asset.bulk_add_tag"
-    bl_label = "Add Tag"
+class ASSET_OT_TagCopyOperator(BaseBulkOperator):
+    """Bulk Copy Tag"""
+    bl_idname = "asset.bulk_copy_tag"
+    bl_label = "Copy Tag"
 
-    tag: bpy.props.StringProperty(name="Tag to Add")
+    tag: bpy.props.EnumProperty(
+        name="Tag to Copy", items=tag_callback)
 
     def main(self, context):
         if self.tag.strip() == "":
@@ -26,7 +27,7 @@ class ASSET_OT_TagAddOperator(BaseBulkOperator):
                 f.local_id.asset_data.tags.new(self.tag, skip_if_exists=True)
 
 
-def ASSET_MT_tag_add_menu_func(self, context):
+def ASSET_MT_tag_copy_menu_func(self, context):
     self.layout.operator_context = 'INVOKE_DEFAULT'
-    self.layout.operator(ASSET_OT_TagAddOperator.bl_idname,
-                         text=ASSET_OT_TagAddOperator.bl_label)
+    self.layout.operator(ASSET_OT_TagCopyOperator.bl_idname,
+                         text=ASSET_OT_TagCopyOperator.bl_label)
