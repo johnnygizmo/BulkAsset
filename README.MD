@@ -7,6 +7,8 @@ Features on the Main Channel
 
 ## On the local or external files:
 
+Select Assets in the Asset Browser and Right Click
+
 -  Move to Catalog / Unassign
 -  Set Author
 -  Set Description
