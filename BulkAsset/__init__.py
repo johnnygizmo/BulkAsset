@@ -1,5 +1,4 @@
 import bpy
-
 from .tag_copy import *
 from .rename import *
 from .tag_add import *
@@ -20,6 +19,7 @@ bl_info = {
     "doc_url": "",
     "category": "Assets"
 }
+
 
 classes = (
     ASSET_OT_MoveOperator,
