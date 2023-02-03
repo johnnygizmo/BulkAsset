@@ -15,6 +15,7 @@ Select Assets in the Asset Browser and Right Click
 -  Add/Remove/Copy Tags
 -  Rename Assets
 -  Clear Assets
+-  Allow Multithreading
 
 This is a free addon! If you want to download the release version, you can grab it from my Gumroad: https://johnnygizmo.gumroad.com/l/bulk-asset-tools
 
