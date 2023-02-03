@@ -1,5 +1,7 @@
 import bpy
 import os
+
+from .base_operator_class import BaseBulkOperator
 from .utilities import *
 
 

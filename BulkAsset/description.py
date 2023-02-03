@@ -1,7 +1,7 @@
 import bpy
 import os
 from .utilities import *
-
+from .base_operator_class import BaseBulkOperator
 
 class ASSET_OT_DescriptionOperator(BaseBulkOperator):
     """Bulk Change Description"""
