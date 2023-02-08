@@ -8,6 +8,7 @@ from .author import *
 from .description import *
 from .clear import *
 from .utilities import header_menu_func
+from .settings import *
 
 bl_info = {
     "name": "Bulk Asset Tools",
@@ -20,8 +21,8 @@ bl_info = {
     "category": "Assets"
 }
 
-
 classes = (
+    BulkAssetToolsPreferences,
     ASSET_OT_MoveOperator,
     ASSET_OT_AuthorOperator,
     ASSET_OT_DescriptionOperator,

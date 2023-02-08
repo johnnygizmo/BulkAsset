@@ -1,13 +1,15 @@
 import bpy
 import os
+from .settings import *
 
+# UI Functions
 
-## UI Functions
 
 def header_menu_func(self, context):
     self.layout.operator_context = 'INVOKE_DEFAULT'
     self.layout.separator()
     self.layout.label(text="=== Bulk Asset Tools ===")
+
 
 def tag_callback(self, context):
     tags = {}
@@ -46,7 +48,7 @@ def item_callback(self, context):
     return output
 
 
-## Utility Functions
+# Utility Functions
 
 def get_catalog_directory(context):
     catalog = context.space_data.params.catalog_id
@@ -56,10 +58,12 @@ def get_catalog_directory(context):
     d = str(directory).split('\'')
     return d[1]
 
+
 def get_file_path(relative_path, directory):
     p = relative_path.split(".blend\\")
     p[0] = p[0]+".blend"
     return os.path.join(directory, p[0])
+
 
 def id_type_to_type_name(id_type):
     type_out = id_type.lower()+"s"
@@ -67,13 +71,19 @@ def id_type_to_type_name(id_type):
         type_out = "node_groups"
     return type_out
 
+
 def run_command(path, commands):
     import subprocess
     commandlist = "".join(commands)
     try:
         expr = "import bpy; "+commandlist + \
             " bpy.ops.wm.save_mainfile(); bpy.ops.wm.quit_blender();"
-        subprocess.run([bpy.app.binary_path, "-b",
-                        path, "--python-expr", expr])
+        list = [bpy.app.binary_path]
+        if bpy.context.preferences.addons['BulkAsset'].preferences.background == True:
+            list.append("-b")
+        list.append(path)
+        list.append("--python-expr")
+        list.append(expr)
+        subprocess.run(list)
     except:
         print("Error on the new Blender instance")

@@ -24,11 +24,12 @@ If you want to support development, join my Patreon @ https://www.patreon.com/jo
 Be aware that when you select multiple assets from different files, each of those files will be loaded, modified and saved in the background. So, this can take a while and it may seem like Blender is frozen. JUST WAIT it will get there eventually. I'm trying to find a good way to show progress
 
 ## Current Master (1.2) New Features
-- Add Options to Context Menu 
-- Remove Tags gives drop down of tags on selected assets
-- Copy Tag Option
-- Clear Asset Option
-- Code Cleanup
+Add Options to Context Menu 
+Remove Tags gives drop down of tags on selected assets
+Copy Tag Option
+Clear Asset Option
+Code Cleanup
+Add Multithreading
   
 ## Release History
   

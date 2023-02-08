@@ -1,6 +1,6 @@
 import bpy
 from .utilities import *
-from .settings import max_threads
+from .settings import *
 
 
 class BaseBulkOperator(bpy.types.Operator):
@@ -55,7 +55,7 @@ class BaseBulkOperator(bpy.types.Operator):
             import subprocess
 
             for proc in reversed(self.processes):
-                if proc.poll() != None:
+                if proc.poll() is not None:
                     self.processes.remove(proc)
 
             if len(self.commands) == 0 and len(self.processes) == 0:
@@ -63,19 +63,30 @@ class BaseBulkOperator(bpy.types.Operator):
                 context.window_manager.progress_end()
                 return {'FINISHED'}
 
-            if len(self.commands.keys()) > 0 and len(self.processes) < max_threads:
+            if len(self.commands.keys()) > 0 and len(self.processes) < bpy.context.preferences.addons['BulkAsset'].preferences.max_threads:
                 (path, commands) = self.commands.popitem()
 
                 commandlist = "".join(commands)
                 try:
-                    expr = "import bpy; "+commandlist + \
-                        " bpy.ops.wm.save_mainfile(); bpy.ops.wm.quit_blender();"
-                    self.processes.append(subprocess.Popen([bpy.app.binary_path, "-b",
-                                                            path, "--python-expr", expr]))
-                    print('launch proc')
-                except:
-                    print("Error on the new Blender instance")
+                    expr = "import bpy; import time; "+commandlist + \
+                        " time.sleep(0.5);bpy.ops.wm.save_mainfile(); " +\
+                        " time.sleep(0.5);bpy.ops.wm.quit_blender();  " +\
+                        "bpy.ops.wm.quit_blender();"
 
+                    list = [bpy.app.binary_path]
+                    if bpy.context.preferences.addons['BulkAsset'].preferences.factory_default == True:
+                        list.append("--factory-startup")
+                    if bpy.context.preferences.addons['BulkAsset'].preferences.background == True:
+                        list.append("-b")
+                    else:
+                        list.append("--no-window-focus")
+                    list.append(path)
+                    list.append("--python-expr")
+                    list.append(expr)
+                    list.append("--")
+                    process = subprocess.Popen(list)
+                    self.processes.append(process)
+                except Exception:
+                    print(Exception)
             return {'RUNNING_MODAL'}
-
         return {'PASS_THROUGH'}
