@@ -7,6 +7,8 @@ from .move import *
 from .author import *
 from .description import *
 from .clear import *
+from .copyright import *
+from .license import *
 from .utilities import header_menu_func
 from .settings import *
 
@@ -14,8 +16,8 @@ bl_info = {
     "name": "Bulk Asset Tools",
     "author": "Johnny Matthews",
     "location": "Asset Viewer - Edit Menu",
-    "version": (1, 2),
-    "blender": (3, 4, 1),
+    "version": (1, 4),
+    "blender": (3, 5, 0),
     "description": "A set of tools for managing multiple assets at the same time",
     "doc_url": "",
     "category": "Assets"
@@ -30,12 +32,16 @@ classes = (
     ASSET_OT_TagCopyOperator,
     ASSET_OT_TagRemoveOperator,
     ASSET_OT_RenameOperator,
-    ASSET_OT_ClearOperator
+    ASSET_OT_ClearOperator,
+    ASSET_OT_LicenseOperator,
+    ASSET_OT_CopyrightOperator
 )
 
 menus = (
     ASSET_MT_move_menu_func,
     ASSET_MT_author_menu_func,
+    ASSET_MT_license_menu_func,
+    ASSET_MT_copyright_menu_func,
     ASSET_MT_description_menu_func,
     ASSET_MT_tag_add_menu_func,
     ASSET_MT_tag_copy_menu_func,
