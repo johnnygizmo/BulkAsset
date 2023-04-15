@@ -16,7 +16,7 @@ bl_info = {
     "name": "Bulk Asset Tools",
     "author": "Johnny Matthews",
     "location": "Asset Viewer - Edit Menu",
-    "version": (1, 4),
+    "version": (1, 5),
     "blender": (3, 5, 0),
     "description": "A set of tools for managing multiple assets at the same time",
     "doc_url": "",
@@ -54,33 +54,21 @@ menus = (
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
-    if hasattr(bpy.types, "ASSETBROWSER_MT_asset"):
-        bpy.types.ASSETBROWSER_MT_context_menu.append(header_menu_func)
-        bpy.types.ASSETBROWSER_MT_asset.append(header_menu_func)
-        for menu in menus:
-            bpy.types.ASSETBROWSER_MT_asset.append(menu)
-            bpy.types.ASSETBROWSER_MT_context_menu.append(menu)
-    else:
-        bpy.types.ASSETBROWSER_MT_edit.append(header_menu_func)
-        bpy.types.ASSETBROWSER_MT_context_menu.append(header_menu_func)
-        for menu in menus:
-            bpy.types.ASSETBROWSER_MT_edit.append(menu)
-            bpy.types.ASSETBROWSER_MT_context_menu.append(menu)
+        
+    bpy.types.ASSETBROWSER_MT_context_menu.append(header_menu_func)
+    bpy.types.ASSETBROWSER_MT_asset.append(header_menu_func)
+    for menu in menus:
+        bpy.types.ASSETBROWSER_MT_asset.append(menu)
+        bpy.types.ASSETBROWSER_MT_context_menu.append(menu)
+
 
 
 def unregister():
-    if hasattr(bpy.types, "ASSETBROWSER_MT_asset"):
-        bpy.types.ASSETBROWSER_MT_context_menu.remove(header_menu_func)
-        bpy.types.ASSETBROWSER_MT_asset.remove(header_menu_func)
-        for menu in menus:
-            bpy.types.ASSETBROWSER_MT_asset.remove(menu)
-            bpy.types.ASSETBROWSER_MT_context_menu.remove(menu)
-    else:
-        bpy.types.ASSETBROWSER_MT_edit.remove(header_menu_func)
-        bpy.types.ASSETBROWSER_MT_context_menu.remove(header_menu_func)
-        for menu in menus:
-            bpy.types.ASSETBROWSER_MT_edit.remove(menu)
-            bpy.types.ASSETBROWSER_MT_context_menu.remove(menu)
+    bpy.types.ASSETBROWSER_MT_context_menu.remove(header_menu_func)
+    bpy.types.ASSETBROWSER_MT_asset.remove(header_menu_func)
+    for menu in menus:
+        bpy.types.ASSETBROWSER_MT_asset.remove(menu)
+        bpy.types.ASSETBROWSER_MT_context_menu.remove(menu)
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
