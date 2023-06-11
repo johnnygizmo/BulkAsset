@@ -1,4 +1,5 @@
 import bpy
+import bpy.types
 from .tag_copy import *
 from .rename import *
 from .tag_add import *
@@ -15,8 +16,8 @@ from .settings import *
 bl_info = {
     "name": "Bulk Asset Tools",
     "author": "Johnny Matthews",
-    "location": "Asset Viewer - Edit Menu",
-    "version": (1, 5),
+    "location": "Asset Viewer - Right Click Menu",
+    "version": (1, 6),
     "blender": (3, 5, 0),
     "description": "A set of tools for managing multiple assets at the same time",
     "doc_url": "",
@@ -56,23 +57,38 @@ def register():
         bpy.utils.register_class(cls)
         
     bpy.types.ASSETBROWSER_MT_context_menu.append(header_menu_func)
-    bpy.types.ASSETBROWSER_MT_asset.append(header_menu_func)
+    if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
+        bpy.types.ASSETBROWSER_MT_asset.append(header_menu_func)
+    elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
+        bpy.types.ASSETBROWSER_MT_edit.append(header_menu_func)
+        
+
     for menu in menus:
-        bpy.types.ASSETBROWSER_MT_asset.append(menu)
+        if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
+            bpy.types.ASSETBROWSER_MT_asset.append(menu)
+        elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
+            bpy.types.ASSETBROWSER_MT_edit.append(menu)
         bpy.types.ASSETBROWSER_MT_context_menu.append(menu)
 
 
 
 def unregister():
     bpy.types.ASSETBROWSER_MT_context_menu.remove(header_menu_func)
-    bpy.types.ASSETBROWSER_MT_asset.remove(header_menu_func)
+
+    if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
+        bpy.types.ASSETBROWSER_MT_asset.remove(header_menu_func)
+    elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
+        bpy.types.ASSETBROWSER_MT_edit.remove(header_menu_func)
+
     for menu in menus:
-        bpy.types.ASSETBROWSER_MT_asset.remove(menu)
+        if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
+            bpy.types.ASSETBROWSER_MT_asset.remove(menu)
+        elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
+            bpy.types.ASSETBROWSER_MT_edit.remove(menu)        
         bpy.types.ASSETBROWSER_MT_context_menu.remove(menu)
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
-
 
 if __name__ == "__main__":
     register()
