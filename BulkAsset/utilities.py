@@ -13,8 +13,8 @@ def header_menu_func(self, context):
 
 def tag_callback(self, context):
     tags = {}
-    for f in bpy.context.selected_asset_files:
-        for tag in f.asset_data.tags:
+    for f in bpy.context.selected_assets:
+        for tag in f.metadata.tags:
             tags[tag.name] = True
     output = []
     i = 0
@@ -25,15 +25,20 @@ def tag_callback(self, context):
 
 
 def item_callback(self, context):
-    directory = context.space_data.params.directory
+    output = [("", "Catalog", "", 0),
+              ("00000000-0000-0000-0000-000000000000", "Unassigned", "", 0)]
+
+    if bpy.context.space_data.params.asset_library_reference == "ALL":
+        return [("", "Select a catalog other than 'All'", "", 0)]
+
+    directory = context.space_data.params.directory    
     d = str(directory).split('\'')
+
     directory = d[1]
     cat = open(os.path.join(str(directory), "blender_assets.cats.txt"))
     cats = cat.readlines()
     cat.close()
-
-    output = [("", "Catalog", "", 0),
-              ("00000000-0000-0000-0000-000000000000", "Unassigned", "", 0)]
+    
     i = 1
     for line in cats:
         if line[0:1] == "#":

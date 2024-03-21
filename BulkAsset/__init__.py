@@ -17,8 +17,8 @@ bl_info = {
     "name": "Bulk Asset Tools",
     "author": "Johnny Matthews",
     "location": "Asset Viewer - Right Click Menu",
-    "version": (1, 6),
-    "blender": (3, 5, 0),
+    "version": (1, 7),
+    "blender": (4, 0, 1),
     "description": "A set of tools for managing multiple assets at the same time",
     "doc_url": "",
     "category": "Assets"
@@ -75,16 +75,17 @@ def register():
 def unregister():
     bpy.types.ASSETBROWSER_MT_context_menu.remove(header_menu_func)
 
-    if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
-        bpy.types.ASSETBROWSER_MT_asset.remove(header_menu_func)
-    elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
-        bpy.types.ASSETBROWSER_MT_edit.remove(header_menu_func)
+    
+    #if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
+    bpy.types.ASSETBROWSER_MT_asset.remove(header_menu_func)
+    #elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
+    #    bpy.types.ASSETBROWSER_MT_edit.remove(header_menu_func)
 
     for menu in menus:
-        if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
-            bpy.types.ASSETBROWSER_MT_asset.remove(menu)
-        elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
-            bpy.types.ASSETBROWSER_MT_edit.remove(menu)        
+        #if hasattr(bpy.types,"ASSETBROWSER_MT_asset"):
+        bpy.types.ASSETBROWSER_MT_asset.remove(menu)
+        #elif hasattr(bpy.types,"ASSETBROWSER_MT_edit"):
+        #bpy.types.ASSETBROWSER_MT_edit.remove(menu)        
         bpy.types.ASSETBROWSER_MT_context_menu.remove(menu)
 
     for cls in reversed(classes):

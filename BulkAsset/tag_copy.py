@@ -15,9 +15,9 @@ class ASSET_OT_TagCopyOperator(BaseBulkOperator):
         if self.tag.strip() == "":
             return
         directory = get_catalog_directory(context)
-        for f in bpy.context.selected_asset_files:
+        for f in bpy.context.selected_assets:
             if f.local_id == None:
-                path = get_file_path(f.relative_path, directory)
+                path = get_file_path(f.full_path, directory)
                 type_out = id_type_to_type_name(f.id_type)
                 if path not in self.commands.keys():
                     self.commands[path] = []
