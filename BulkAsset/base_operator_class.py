@@ -63,7 +63,7 @@ class BaseBulkOperator(bpy.types.Operator):
                 context.window_manager.progress_end()
                 return {'FINISHED'}
 
-            if len(self.commands.keys()) > 0 and len(self.processes) < bpy.context.preferences.addons['BulkAsset'].preferences.max_threads:
+            if len(self.commands.keys()) > 0 and len(self.processes) < bpy.context.preferences.addons[__package__].preferences.max_threads:
                 (path, commands) = self.commands.popitem()
 
                 commandlist = "".join(commands)
@@ -74,9 +74,9 @@ class BaseBulkOperator(bpy.types.Operator):
                         "bpy.ops.wm.quit_blender();"
 
                     list = [bpy.app.binary_path]
-                    if bpy.context.preferences.addons['BulkAsset'].preferences.factory_default == True:
+                    if bpy.context.preferences.addons[__package__].preferences.factory_default == True:
                         list.append("--factory-startup")
-                    if bpy.context.preferences.addons['BulkAsset'].preferences.background == True:
+                    if bpy.context.preferences.addons[__package__].preferences.background == True:
                         list.append("-b")
                     else:
                         list.append("--no-window-focus")

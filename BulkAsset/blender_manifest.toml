@@ -3,7 +3,7 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "bulk_asset_tools"
-version = "1.7.0"
+version = "1.7.2"
 name = "Bulk Asset Tools"
 tagline = "Manage your asset libraries with ease"
 maintainer = "Johnny Matthews <johnny.matthews@gmail.com>"

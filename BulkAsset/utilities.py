@@ -8,7 +8,7 @@ from .settings import *
 def header_menu_func(self, context):
     self.layout.operator_context = 'INVOKE_DEFAULT'
     self.layout.separator()
-    self.layout.label(text="=== Bulk Asset Tools ===")
+   
 
 
 def tag_callback(self, context):
@@ -84,7 +84,7 @@ def run_command(path, commands):
         expr = "import bpy; "+commandlist + \
             " bpy.ops.wm.save_mainfile(); bpy.ops.wm.quit_blender();"
         list = [bpy.app.binary_path]
-        if bpy.context.preferences.addons['BulkAsset'].preferences.background == True:
+        if bpy.context.preferences.addons[__package__].preferences.background == True:
             list.append("-b")
         list.append(path)
         list.append("--python-expr")

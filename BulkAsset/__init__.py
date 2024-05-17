@@ -17,8 +17,8 @@ bl_info = {
     "name": "Bulk Asset Tools",
     "author": "Johnny Matthews",
     "location": "Asset Viewer - Right Click Menu",
-    "version": (1, 7),
-    "blender": (4, 0, 1),
+    "version": (1, 7, 2),
+    "blender": (4, 2, 0),
     "description": "A set of tools for managing multiple assets at the same time",
     "doc_url": "",
     "category": "Assets"
