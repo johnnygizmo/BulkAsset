@@ -65,7 +65,7 @@ def get_catalog_directory(context):
 
 
 def get_file_path(relative_path, directory):
-    p = relative_path.split(".blend\\")
+    p = relative_path.split(".blend" + os.sep)
     p[0] = p[0]+".blend"
     return os.path.join(directory, p[0])
 
